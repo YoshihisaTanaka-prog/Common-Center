@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>補助教材</title>
+    <link rel="icon" type="image/png" href="https://drive.google.com/uc?id=1gSe-v4qfUHP_vrhCQMg0RSmkOYpbbzT6&png" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  </head>
+  <body>
+    <center>
+      <div>
+        Scale<input type="range" min="0.6" max="1.4" step="0.01" value="1" oninput="draw()" id="scale-val"><span id="scale-span">1.00</span><br>
+        a<input type="range" min="5" max="10" step="0.001" value="6" oninput="draw()" id="a-val"><span id="a-span">06.00</span><br>
+        AP<input type="range" min="0" max="5" step="0.001" value="0" oninput="draw()" id="ap-val"><span id="ap-span">06.00</span>
+      </div>
+      <svg id="svg"></svg>
+    </center>
+    <script>
+      window.onload = draw;
+      function draw() {
+        const scale = Number($("#scale-val").val());
+        $("#scale-span").text(scale.toFixed(2).toString().padStart(4,'0'));
+        const a = Number($("#a-val").val());
+        $("#a-span").text(a.toFixed(2).toString().padStart(5,'0'));
+        const ap = Number($("#ap-val").val());
+        $("#ap-span").text(ap.toFixed(2).toString().padStart(4,'0'));
+        const svg = $("#svg")
+        svg.attr("viewBox", "0 0 " + 1100*scale + " " + 1100*scale).attr("width", 1100*scale).attr("height", 1100*scale).html("");
+        
+        svg.append("<polyline stroke-width='1' stroke='#000' fill='none' points='" + 50*scale +"," + 50*scale + " " + 50*scale + "," + 550*scale + " " + (50+100*a)*scale + "," + 550*scale + " " + (50+100*a)*scale + "," + 50*scale + " " + 50*scale+ "," + 50*scale + "' />");
+        svg.append("<polyline stroke-width='1' stroke='#000' fill='none' points='" + 50*scale + "," + (50+100*ap)*scale + " " + (550-100*ap)*scale + "," + 550*scale + " " + (50+100*a)*scale + "," + (1050-(a+ap)*100)*scale + " " + ((2*a+ap)*100-950)*scale + ","  + 50*scale + " " + 50*scale + "," + ((2*a+ap)*100-950)*scale + "' />");
+
+        svg.html(svg.html());
+      }
+    </script>
+  </body>
+</html>
