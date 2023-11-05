@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>補助教材</title>
+    <link rel="icon" type="image/png" href="https://drive.google.com/uc?id=1gSe-v4qfUHP_vrhCQMg0RSmkOYpbbzT6&png" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  </head>
+  <body>
+    <center>
+      <div>
+        Scale<input type="range" min="0.6" max="1.4" step="0.01" value="0.7" oninput="draw()" id="scale-val"><span id="scale-span">1.00</span><br>
+        h<input type="range" min="4" max="8" step="0.001" value="4" oninput="draw()" id="h-val"><span id="h-span">04.00</span><br>
+        P2<input type="range" min="0" max="5" step="0.001" value="0" oninput="draw()" id="p2-val"><span id="p2-span">06.00</span>
+      </div>
+      <svg id="svg"></svg>
+    </center>
+    <script>
+      window.onload = draw;
+      function draw() {
+        const scale = Number($("#scale-val").val());
+        $("#scale-span").text(scale.toFixed(2).toString().padStart(4,'0'));
+        const h = Number($("#h-val").val());
+        $("#h-span").text(h.toFixed(2).toString().padStart(5,'0'));
+        const p2 = Number($("#p2-val").val());
+        $("#p2-span").text(p2.toFixed(2).toString().padStart(4,'0'));
+        const svg = $("#svg")
+        svg.attr("viewBox", "0 0 " + 1100*scale + " " + 1100*scale).attr("width", 1100*scale).attr("height", 1100*scale).html("");
+        
+        svg.append("<polyline stroke-width='1' stroke='#000' fill='none' points='" + 200*scale +"," + 750*scale + " " + 900*scale + "," + 750*scale + "' />");
+        svg.append("<polyline stroke-width='1' stroke='#000' fill='none' points='" + 200*scale +"," + (750-h*700/8)*scale + " " + 900*scale + "," + (750-h*700/8)*scale + "' />");
+        svg.append("<polyline stroke-width='1' stroke='#000' fill='none' points='" + 200*scale +"," + 750*scale + " " + 550*scale + "," + (750-h*700/8)*scale + " " + 900*scale + "," + 750*scale + "' />");
+        svg.append("<polyline stroke-width='1' stroke='#000' fill='none' points='" + 200*scale +"," + 750*scale + " " + (550+70*p2)*scale + "," + (750-h*700/8)*scale + " " + 900*scale + "," + 750*scale + "' />");
+        svg.append("<circle stroke-width='1' stroke='#000' fill='#000' cx='" + 550*scale +"' cy='" + (750-h*700/8)*scale + "' r='3' />");
+        svg.append("<circle stroke-width='1' stroke='#000' fill='#000' cx='" + (550+70*p2)*scale +"' cy='" + (750-h*700/8)*scale + "' r='3' />");
+        svg.html(svg.html());
+      }
+    </script>
+  </body>
+</html>50*scale +"," + 750*scale + " " + 1050*scale + "," + 750*scale + " " + (50+100*a)*scale + "," + 550*scale + " " + (50+100*a)*scale + "," + 50*scale + " " + 50*scale+ "," + 50*scale + "' />");
+        svg.append("<polyline stroke-width='1' stroke='#000' fill='none' points='" + 50*scale + "," + (50+100*ap)*scale + " " + (550-100*ap)*scale + "," + 550*scale + " " + (50+100*a)*scale + "," + (1050-(a+ap)*100)*scale + " " + ((2*a+ap)*100-950)*scale + ","  + 50*scale + " " + 50*scale + "," + ((2*a+ap)*100-950)*scale + "' />");
+
+        svg.html(svg.html());
+      }
+    </script>
+  </body>
+</html>
