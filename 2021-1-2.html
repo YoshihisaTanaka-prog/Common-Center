@@ -25,20 +25,35 @@
         $("#p2-span").text(p2.toFixed(2).toString().padStart(4,'0'));
         const svg = $("#svg")
         svg.attr("viewBox", "0 0 " + 1100*scale + " " + 1100*scale).attr("width", 1100*scale).attr("height", 1100*scale).html("");
+
+        const x1 = (550+70*p2)*scale;
+        const y1 = (750-h*700/8)*scale;
+        const cx1 = 550*scale;
+        const cy1 = -((x1-200*scale)/(y1-750*scale)*(550*scale-(200*scale + x1)/2))+(y1+750*scale)/2
+        const r1 = Math.sqrt((cx1-200*scale)*(cx1-200*scale) + (cy1 - 750*scale)*(cy1-750*scale));
+
+        const x2 = 550*scale;
+        const y2 = (750-h*700/8)*scale;
+        const cx2 = 550*scale;
+        const cy2 = -((x2-200*scale)/(y2-750*scale)*(550*scale-(200*scale + x2)/2))+(y2+750*scale)/2
+        const r2 = Math.sqrt((cx2-200*scale)*(cx2-200*scale) + (cy2 - 750*scale)*(cy2-750*scale));
+
+        const p3x = 550*scale;
+        const p3y = cy1 - r1;
+
+        svg.append("<circle stroke-width='0.5' stroke='#000' fill='none' cx='" + cx1 + "' cy='" + cy1 + "' r='" + r1 + "' ></circle>");
+        svg.append("<circle stroke-width='0.5' stroke='#000' fill='none' cx='" + cx2 + "' cy='" + cy2 + "' r='" + r2 + "' ></circle>");
         
         svg.append("<polyline stroke-width='1' stroke='#000' fill='none' points='" + 200*scale +"," + 750*scale + " " + 900*scale + "," + 750*scale + "' />");
         svg.append("<polyline stroke-width='1' stroke='#000' fill='none' points='" + 200*scale +"," + (750-h*700/8)*scale + " " + 900*scale + "," + (750-h*700/8)*scale + "' />");
         svg.append("<polyline stroke-width='1' stroke='#000' fill='none' points='" + 200*scale +"," + 750*scale + " " + 550*scale + "," + (750-h*700/8)*scale + " " + 900*scale + "," + 750*scale + "' />");
         svg.append("<polyline stroke-width='1' stroke='#000' fill='none' points='" + 200*scale +"," + 750*scale + " " + (550+70*p2)*scale + "," + (750-h*700/8)*scale + " " + 900*scale + "," + 750*scale + "' />");
-        svg.append("<circle stroke-width='1' stroke='#000' fill='#000' cx='" + 550*scale +"' cy='" + (750-h*700/8)*scale + "' r='3' />");
-        svg.append("<circle stroke-width='1' stroke='#000' fill='#000' cx='" + (550+70*p2)*scale +"' cy='" + (750-h*700/8)*scale + "' r='3' />");
-        svg.html(svg.html());
-      }
-    </script>
-  </body>
-</html>50*scale +"," + 750*scale + " " + 1050*scale + "," + 750*scale + " " + (50+100*a)*scale + "," + 550*scale + " " + (50+100*a)*scale + "," + 50*scale + " " + 50*scale+ "," + 50*scale + "' />");
-        svg.append("<polyline stroke-width='1' stroke='#000' fill='none' points='" + 50*scale + "," + (50+100*ap)*scale + " " + (550-100*ap)*scale + "," + 550*scale + " " + (50+100*a)*scale + "," + (1050-(a+ap)*100)*scale + " " + ((2*a+ap)*100-950)*scale + ","  + 50*scale + " " + 50*scale + "," + ((2*a+ap)*100-950)*scale + "' />");
-
+        svg.append("<polyline stroke-width='1' stroke='#000' fill='none' points='" + 200*scale +"," + 750*scale + " " + p3x + "," + p3y + " " + 900*scale + "," + 750*scale + "' />");
+        svg.append("<circle stroke-width='1' stroke='#000' fill='#000' cx='" + 550*scale +"' cy='" + (750-h*700/8)*scale + "' r='3'></circle><text x='" + 530*scale + "' y='" + (730-h*700/8)*scale + "'>P1</text>");
+        svg.append("<circle stroke-width='1' stroke='#000' fill='#000' cx='" + x1 +"' cy='" + y1 + "' r='3'></circle><text x='" + (570+70*p2)*scale + "' y='" + (730-h*700/8)*scale + "'>P2</text>");
+        svg.append("<circle stroke-width='1' stroke='#000' fill='#000' cx='" + p3x +"' cy='" + p3y + "' r='3'></circle><text x='" + p3x + "' y='" + (p3y+30*scale)  + "'>P3</text>");
+        svg.append("<circle stroke-width='1' stroke='#000' fill='#000' cx='" + 200*scale +"' cy='" + 750*scale + "' r='3'></circle><text x='" + 200*scale + "' y='" + 780*scale + "'>A</text>");
+        svg.append("<circle stroke-width='1' stroke='#000' fill='#000' cx='" + 900*scale +"' cy='" + 750*scale + "' r='3'></circle><text x='" + 900*scale + "' y='" + 780*scale + "'>B</text>");
         svg.html(svg.html());
       }
     </script>
