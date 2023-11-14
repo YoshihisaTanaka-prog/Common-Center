@@ -1,0 +1,116 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>補助教材</title>
+    <link rel="icon" type="image/png" href="https://drive.google.com/uc?id=1gSe-v4qfUHP_vrhCQMg0RSmkOYpbbzT6&png" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  </head>
+  <body>
+    <a href="index.html">トップへ</a>
+    <center>
+      <div>
+        <p>Scale<input type="range" min="0.6" max="1.4" step="0.01" value="1" oninput="draw()" id="scale-val"><span id="scale-span"></span></p>
+        <p>∠XZY<input type="range" min="0" max="90" step="0.01" value="45" oninput="draw()" id="xzy-val"><span id="xzy-span"></span></p>
+        <p>∠XZS<input type="range" min="22.5" max="45" step="0.01" value="22.5" oninput="draw()" id="xzs-val"><span id="xzs-span"></span></p>
+        <p>C<input type="range" min="0" max="600" value="100" oninput="draw()" id="c-val"><span id="c-span"></span></p>
+        <p>Gの左右<input type="radio" name="left-right" onclick="setLeftRight(true)" checked>左<input type="radio" name="left-right" onclick="setLeftRight(false)">右</p>
+        <p>Step<input type="range" min="1" max="5" value="1" oninput="draw()" id="step-val"><span id="step-span"></span></p>
+      </div>
+      <svg id="svg"></svg>
+    </center>
+    <script>
+      const svg = $("#svg");
+      var isLeft = true;
+
+      window.onload = draw;
+      
+      function draw() {
+        const scale = Number($("#scale-val").val());
+        $("#scale-span").text(scale.toFixed(2));
+        const xzy = Number($("#xzy-val").val());
+        $("#xzy-span").text(xzy.toFixed(2));
+        let xzs = Number($("#xzs-val").val());
+        if( xzs < xzy / 2 || xzs > xzy ){
+          xzs = xzy / 2;
+          $("#xzs-val").val(xzs);
+        }
+        $("#xzs-val").attr("min", xzy/2).attr("max", xzy);
+        const c = Number($("#c-val").val());
+        $("#c-span").text(c);
+        const step = Number($("#step-val").val());
+        $("#step-span").text(step);
+
+        const xzyT = xzy * Math.PI / 180;
+        const xzsT = xzs * Math.PI / 180;
+
+        const sx = 300*cos(xzsT);
+        const sy = 300*sin(xzsT);
+
+        $("#xzs-span").text(xzs.toFixed(2));
+
+        svg.html("").attr("width", 700*scale).attr("height", 700*scale).attr("viewBox", "0 0 " + 700*scale + " " + 700*scale);
+
+        svg.append("<polyline stroke-width='1' stroke='#000' fill='none' points='" + (50 + 600*cos(xzyT))*scale + "," + (650 - 600*sin(xzyT))*scale + " " + 50*scale + "," + 650*scale + " " + 650*scale + "," + 650*scale + "'></polyline>");
+        svg.append("<polyline stroke-width='0.5' stroke='#000' fill='none' points='" + 50*scale + "," + 650*scale + " " + (50 + 600*cos(xzsT))*scale + "," + (650 - 600*sin(xzsT))*scale + "'></polyline><circle stroke-width='0.5' stroke='#000' fill='#000' cx='" + (50 + sx)*scale + "' cy='" + (650 - sy)*scale + "' r='" + 3 + "' ></circle><text x='" + (60 + sx)*scale + "' y='" + (670 - sy)*scale + "'>S</text>");
+        svg.append("<circle stroke-width='0.5' stroke='#000' fill='#000' cx='" + (50 + c*cos(xzyT/2))*scale + "' cy='" + (650 - c*sin(xzyT/2))*scale + "' r='" + 3 + "' ></circle><text x='" + (60 + c*cos(xzyT/2))*scale + "' y='" + (670 - c*sin(xzyT/2))*scale + "'>C</text>");
+        svg.append("<circle stroke-width='0.5' stroke='#000' fill='none' cx='" + (50 + c*cos(xzyT/2))*scale + "' cy='" + (650 - c*sin(xzyT/2))*scale + "' r='" + c*sin(xzyT/2)*scale + "' ></circle>");
+        svg.append("<circle stroke-width='0.5' stroke='#000' fill='#000' cx='" + (50 + c*cos(xzyT/2))*scale + "' cy='" + 650*scale + "' r='" + 3 + "' ></circle><text x='" + (60 + c*cos(xzyT/2))*scale + "' y='" + 670*scale + "'>D</text>");
+        svg.append("<circle stroke-width='0.5' stroke='#000' fill='#000' cx='" + (50 + c*cos(xzyT/2)*cos(xzyT))*scale + "' cy='" + (650 - c*cos(xzyT/2)*sin(xzyT))*scale + "' r='" + 3 + "' ></circle><text x='" + (30 + c*cos(xzyT))*scale + "' y='" + (640 - c*sin(xzyT))*scale + "'>E</text>");
+        svg.append("<polyline stroke-width='0.5' stroke='#000' fill='none' points='" + 50*scale + "," + 650*scale + " " + (50 + 600*cos(xzyT/2))*scale + "," + (650 - 600*sin(xzyT/2))*scale + "'></polyline><text x='" + (60 + 600*cos(xzyT/2))*scale + "' y='" + (670 - 600*sin(xzyT/2))*scale + "'>l</text>");
+        const a1 = 1 + tan(xzsT)*tan(xzsT);
+        const theta = xzyT / 2;
+        const b1 = c*(cos(theta)+sin(theta)*tan(xzsT));
+        const c1 = c*c*cos(theta)*cos(theta);
+
+        let x = 0;
+        if(isLeft){
+          x = ( b1 - sqrt(b1*b1 - a1*c1) ) / a1;
+        } else{
+          x = ( b1 + sqrt(b1*b1 - a1*c1) ) / a1;
+        }
+        const x1 = x;
+        const y1 = x1*tan(xzsT);
+        const x2 = (sx*y1 - (x1-c*cos(theta))*sy)/y1;
+        const y2 = tan(theta) * x2
+        if(step >= 2){
+          svg.append("<circle stroke-width='0.5' stroke='#000' fill='#000' cx='" + (50 + x1)*scale + "' cy='" + (650 - y1)*scale + "' r='" + 3 + "' ></circle><text x='" + (60 + x1)*scale + "' y='" + (650 - y1)*scale + "'>G</text>");
+        }
+        if(step >= 3){
+          svg.append("<polyline stroke-width='0.5' stroke='#000' fill='none' points='" + (50 + x1)*scale + "," + (650 - y1)*scale + " " + (50 + c*cos(xzyT/2))*scale + "," + 650*scale + "'></polyline>");
+          svg.append("<polyline stroke-width='0.5' stroke='#000' fill='none' points='" + (50 + sx)*scale + "," + (650 - sy)*scale + " "+ (50 + x2)*scale + "," + 650*scale + "'></polyline>");
+          svg.append("<circle stroke-width='0.5' stroke='#000' fill='#000' cx='" + (50 + x2)*scale + "' cy='" + 650*scale + "' r='" + 3 + "' ></circle><text x='" + (50 + x2)*scale + "' y='" + 670*scale + "'>H</text>");
+        }
+        if(step >= 4){
+          svg.append("<polyline stroke-width='0.5' stroke='#000' fill='none' points='" + (50 + x2)*scale + "," + (650 - y2)*scale + " "+ (50 + x2)*scale + "," + 650*scale + "'></polyline>");
+          svg.append("<circle stroke-width='0.5' stroke='#000' fill='#000' cx='" + (50 + x2)*scale + "' cy='" + (650 - y2)*scale + "' r='" + 3 + "' ></circle><text x='" + (50 + x2)*scale + "' y='" + (670 - y2)*scale + "'>O</text>");
+        }
+        if(step == 5){
+          svg.append("<circle stroke-width='1' stroke='#000' fill='none' cx='" + (50 + x2)*scale + "' cy='" + (650 - y2)*scale + "' r='" + y2*scale + "' ></circle>")
+        }
+        svg.html(svg.html());
+      }
+
+      function cos(num) {
+        return Math.cos(num);
+      }
+
+      function sin(num) {
+        return Math.sin(num);
+      }
+
+      function tan(num) {
+        return Math.tan(num);
+      }
+
+      function sqrt(num) {
+        return Math.sqrt(num);
+      }
+
+      function setLeftRight(isLeftInputted){
+        isLeft = isLeftInputted;
+        draw();
+      }
+
+    </script>
+  </body>
+</html>
